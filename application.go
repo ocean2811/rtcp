@@ -57,6 +57,10 @@ func (app Application) Marshal() ([]byte, error) {
 	}
 	copy(rawPacket, hData)
 
+	if getPadding(app.packetLen()) != 0 {
+		rawPacket[len(rawPacket)-1] = uint8(app.len() - app.packetLen())
+	}
+
 	return rawPacket, nil
 }
 
@@ -97,7 +101,16 @@ func (app *Application) Unmarshal(rawPacket []byte) error {
 	app.SubType = header.Count
 	app.SSRC = binary.BigEndian.Uint32(packetBody[appSSRCOffset:])
 	copy(app.Name[:], packetBody[appNameOffset:])
-	copy(app.Data, packetBody[appDataOffset:])
+
+	dataBody := packetBody[appDataOffset:]
+	if header.Padding {
+		len := len(dataBody) - int(dataBody[len(dataBody)-1])
+		dataBody = dataBody[:len]
+	}
+	if len(app.Data) < len(dataBody) {
+		app.Data = make([]byte, len(dataBody))
+	}
+	copy(app.Data, dataBody)
 
 	return nil
 }
