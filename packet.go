@@ -105,6 +105,9 @@ func unmarshal(rawData []byte) (packet Packet, bytesprocessed int, err error) {
 			packet = new(RawPacket)
 		}
 
+	case TypeApplicationDefined:
+		packet = new(Application)
+
 	default:
 		packet = new(RawPacket)
 	}
