@@ -140,5 +140,5 @@ func (app *Application) DestinationSSRC() []uint32 {
 }
 
 func (app *Application) String() string { // subtype
-	return fmt.Sprintf("{SubType:%d, SSRC:%d, Name:%s, Data:%s}", app.SubType, app.SSRC, string(app.Name[:]), app.Data)
+	return fmt.Sprintf("{SubType:%d, SSRC:%x, Name:%s, Data:%s}", app.SubType, app.SSRC, string(app.Name[:]), app.Data)
 }
