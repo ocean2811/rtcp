@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+var _ Packet = (*TransportLayerCC)(nil) // assert is a Packet
+
 func TestTransportLayerCC_RunLengthChunkUnmarshal(t *testing.T) {
 	for _, test := range []struct {
 		Name      string
@@ -737,7 +739,7 @@ func TestTransportLayerCC_Marshal(t *testing.T) {
 				0x1, 0x74, 0x0, 0x2,
 				0x45, 0xb1, 0x5a, 0x40,
 				0xd8, 0x0, 0xf0, 0xff,
-				0xd0, 0x0, 0x0, 0x2,
+				0xd0, 0x0, 0x0, 0x1,
 			},
 			WantError: nil,
 		},
